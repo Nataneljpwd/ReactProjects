@@ -1,0 +1,68 @@
+.App{
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(17, 17, 17);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 2em;
+}
+
+.LetterGrid{
+  width:100vw;
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(100px,1fr));
+  grid-auto-rows: minmax(100px,1fr);
+  gap:1em;
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+
+.letter{
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border: 2px solid whitesmoke;
+  color: whitesmoke;
+  text-align: center;
+  align-items: center;
+  font-size: 3em;
+}
+
+.letter:hover{
+  background-color: cadetblue;
+  cursor: pointer;
+}
+
+.hangMan{
+  width: 80%;
+  height: 60vh;
+  margin-inline: auto;
+}
+.post{
+  width: 350px;
+  height: 500px;
+  position: relative;
+  top:20%;
+  left:calc( 50% - 175px );
+}
+
+.HangmanLetters{
+  width:auto;
+  height: auto;
+  margin-inline: auto;
+  margin-bottom: auto;
+  display: flex;
+  gap:2em;
+}
+.HangmanLetters *{
+  color: aliceblue;
+  font-size: 4em;
+  width: 4.2rem;
+  text-align: center;
+  text-transform: uppercase;
+  border-bottom: 8px solid white;
+}
+.HangmanLetters .hide{
+  color:rgb(17, 17, 17);
+}
