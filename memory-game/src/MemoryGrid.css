@@ -1,0 +1,37 @@
+.card{
+    width: 10vmin;
+    height: 15vmin;
+    background-color: whitesmoke;
+    border-radius: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    transition: transform 500ms, color 800ms ease-in;
+    transform: rotateY(180deg);
+    font-size: 2em;
+    color: transparent;
+    cursor: pointer;
+}
+
+.card.reveal{
+    color: black;
+    cursor: default;
+    pointer-events: none;
+    transform: rotateZ(0deg);
+    background-color: rgb(220,220,220);
+}
+.card:hover{
+    background-color: rgb(220,220,220);
+}
+.row{
+    display: flex;
+    flex-direction: row;
+    gap:1vmin;
+}
+.grid{
+    display: flex;
+    gap:1vmin;
+    flex-direction: column;
+}
