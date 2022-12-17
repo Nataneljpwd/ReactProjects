@@ -49,7 +49,23 @@ function MemoryGrid(props) {
                     setRevealed([...newRevealed]);
                 },1000);
             }
+            console.log(revealed.flat());
+            if(revealed.flat().every(element=> element)){
+                if(props.level<props.length-1){
 
+                    sendLevelUpdate();
+                }
+                setPrevClick();
+                setMemoGrid(createGrid(props.rows,props.cols))
+                setRevealed(new Array(parseInt(props.rows)).fill('').map(row => row = new Array(parseInt(props.cols)).fill(false)))
+                props.onReRender();
+            }
+            async function sendLevelUpdate(){
+                await fetch('http://localhost:8888/mem-game/setLevel',{
+                    method:'PUT',
+                     headers:{'Content-Type': 'application/json'},
+                    body: JSON.stringify({level:props.level+1})});
+            }
             setPrevClick();
         }
 

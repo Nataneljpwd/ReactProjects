@@ -1,0 +1,10 @@
+GET http://localhost:8888/mem-game/lvl
+###
+PUT http://localhost:8888/mem-game/setLevel
+Content-Type: application/json
+
+{
+    "level":"0"
+}
+###
+GET http://localhost:8888/mem-game/create
