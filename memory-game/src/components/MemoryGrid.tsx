@@ -1,20 +1,21 @@
-import { useState } from "react";
-import '../MemoryGrid.css'
-function MemoryGrid(props) {
-    function removeItemOnce(arr, index) {
+import React from "react";
+import {useState} from "react";
+import '../MemoryGrid.css';
+function MemoryGrid(props: { rows:   string; cols:  string; level: number; length: number; onReRender: () => void; }) {
+    function removeItemOnce(arr:number[], index:number) {
         if (index > -1) {
             arr.splice(index, 1);
         }
         return arr;
     }
-    const createGrid = (rows, cols) => {
+    const createGrid = (rows:number, cols:number) => {
         //create an array with numbers from 1 to rows*cols/2
-        let nums = [];
+        let nums:number[] = [];
         for (let i = 0; i < (rows * cols) / 2; i++) {
             nums.push(i);
             nums.push(i);
         }
-        let grid = [];
+        let grid:number[][] = [];
         for (let i = 0; i < rows; i++) {
             grid.push([]);
             for (let j = 0; j < cols; j++) {
@@ -27,18 +28,23 @@ function MemoryGrid(props) {
         return grid;
     }
 
-    const [memoGrid, setMemoGrid] = useState(createGrid(props.rows, props.cols));
+    const [memoGrid, setMemoGrid] = useState(createGrid(parseInt(props.rows), parseInt(props.cols)));
     const [revealed, setRevealed] = useState(
         new Array(parseInt(props.rows)).fill('').map(row => row = new Array(parseInt(props.cols)).fill(false))
     );
-    const [prevClick, setPrevClick] = useState();
-    const handleClick = (row, col) => {
+    type PrevClick={
+    row:number;
+    col:number;
+    };
+    const [prevClick, setPrevClick] = useState<PrevClick>();
+    const handleClick = (row:number, col:number) => {
         let newRevealed = [...revealed];
         newRevealed[row][col] = true;
         setRevealed([...newRevealed]);
         setPrevClick({row: row, col: col});
         if (prevClick) {
         if(row === prevClick.row && col ===prevClick.col)return;
+            if(prevClick.row==-1 || prevClick.col==-1)return;
         
             if(memoGrid[prevClick.row][prevClick.col] !== memoGrid[row][col]){
                 //we hide the cards
@@ -49,16 +55,15 @@ function MemoryGrid(props) {
                     setRevealed([...newRevealed]);
                 },1000);
             }
-            console.log(revealed.flat());
-            if(revealed.flat().every(element=> element)){
+           console.log(revealed.flat());
+           if(revealed.flat().every((element: any)=> element)){
                 if(props.level<props.length-1){
 
                     sendLevelUpdate();
                 }
-                setPrevClick();
-                setMemoGrid(createGrid(props.rows,props.cols))
+                setPrevClick({row:-1,col:-1});
+                setMemoGrid(createGrid(parseInt(props.rows),parseInt(props.cols)))
                 setRevealed(new Array(parseInt(props.rows)).fill('').map(row => row = new Array(parseInt(props.cols)).fill(false)))
-                props.onReRender();
             }
             async function sendLevelUpdate(){
                 await fetch('http://localhost:8888/mem-game/setLevel',{
@@ -66,22 +71,22 @@ function MemoryGrid(props) {
                      headers:{'Content-Type': 'application/json'},
                     body: JSON.stringify({level:props.level+1})});
             }
-            setPrevClick();
+            setPrevClick({row:-1,col:-1});
         }
 
     }
     return (
         <div className="grid">
-            {memoGrid.map((row, rowIndex) => {
-                return <div className="row" key={rowIndex}>{row.map((element, colIndex) => {
+            {memoGrid.map((row:number[], rowIndex:number): JSX.Element => {
+                return <div className="row" key={rowIndex}>{row.map((element:any, colIndex:number): JSX.Element => {
                     //for now we will just put the number in the card
                     return <div className={"card ".concat(revealed[rowIndex][colIndex] ? 'reveal' : '')}
                         key={colIndex}
-                        onClick={(e) => handleClick(rowIndex, colIndex)}>
+                        onClick={() => handleClick(rowIndex, colIndex)}>
                         {revealed[rowIndex][colIndex] ? element : ' '}</div>
                 })}</div>;
             })}
         </div>
-    )
+    );
 }
 export default MemoryGrid;
